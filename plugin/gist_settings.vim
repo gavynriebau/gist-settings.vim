@@ -1,5 +1,5 @@
 function! s:VimrcGist(com)
-    let com = 'gist-vimrc '.a:com.' --vimrc '.$MYVIMRC
+    let com = 'gist-vimrc '.a:com.' --vimrc '.GetVimrcPath()
     let _ = system(com)   
      
     if v:shell_error==1
@@ -23,6 +23,14 @@ function! s:VimrcGist(com)
             echo "Pulled vimrc from gist"
         endif
     endif
+endfunction
+
+function! GetVimrcPath()
+	if has('nvim') && filereadable($HOME.'/.vimrc')
+		return $HOME.'/.vimrc'
+	else
+		return $MYVIMRC
+	endif
 endfunction
 
 command! VimrcPush call <SID>VimrcGist('push')
